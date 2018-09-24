@@ -23,7 +23,7 @@ class Practice:
 		practices = []
 		for i in range(0,count):
 			operand = random.randint(1,5) # 操作数
-			item = ""                     # 题目
+			item = str(i) +": "                     # 题目
 			for j in range(0,operand):
 				num = random.randint(1,100)
 				op = random.randint(0,length-1)
@@ -32,6 +32,7 @@ class Practice:
 
 			num = random.randint(1,100)		
 			item = item + str(num) + ' ='
+			item = self.addBrackets(item)
 			practices.append(item)
 			print(item)
 		return practices
@@ -43,7 +44,7 @@ class Practice:
 		length = len(op_list)
 		for i in range(0,count):
 			operand = random.randint(1,5) # 操作数
-			item = ""                     # 题目
+			item = str(i) +": "                     # 题目
 			have = 0                      # 是否已经用特殊符号
 			for j in range(0,operand):
 				flag = random.randint(0,6)   # 可以调节生成特殊符号的概率
@@ -62,6 +63,7 @@ class Practice:
 
 			num = random.randint(1,100)		
 			item = item + str(num) + ' ='
+			item = self.addBrackets(item)
 			practices.append(item)
 			print(item)
 		return practices
@@ -73,7 +75,7 @@ class Practice:
 		length = len(op_list)
 		for i in range(0,count):
 			operand = random.randint(1,5) # 操作数
-			item = ""                     # 题目
+			item = str(i) +": "                     # 题目
 			have = 0                      # 是否已经用特殊符号
 			for j in range(0,operand):
 				flag = random.randint(0,6)   # 可以调节生成特殊符号的概率
@@ -88,6 +90,7 @@ class Practice:
 
 			num = random.randint(1,100)		
 			item = item + str(num) + ' ='
+			item = self.addBrackets(item)
 			practices.append(item)
 			print(item)
 		return practices
@@ -99,6 +102,30 @@ class Practice:
 			return self.practice_middle(count)
 		else:
 			return self.practice_high(count)
+
+	def addBrackets(self,item):   # 添加括号
+		num = random.randint(0,2)
+		string = item
+		for x in range(0,num):
+			length = len(string)
+			for j in range(0,length):
+				flag = random.randint(0,1)
+				if flag==1 and string[j] in self.operation['primary']:
+					# string = string[:j+1] + "(" + string[j+1:]
+					for y in range (j+1,len(string)):   # 找到下一个基本运算符
+						if string[y] in self.operation['primary']:
+							break
+
+					n = random.randint(y+1,len(string))
+					for z in range(n,len(string)):
+						if string[z] in self.operation['primary']:   # 一起加括号
+							string = string[:j+1] + "(" + string[j+1:]
+							string = string[:z] + ")" + string[z:]
+							break
+
+					break
+
+		return string
 
 
 
