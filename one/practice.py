@@ -15,10 +15,12 @@ class Practice:
 		self.operation['primary'] = ["+","-","*","/"]
 		self.operation['middle'] = ["^0.5","","^2"]
 		self.operation['high'] = ["cos","sin","tan"]
+		# self.practices = []
 
 	def pratice_primary(self,count,type="primary"):
 		op_list = self.operation[type]
 		length = len(op_list)
+		practices = []
 		for i in range(0,count):
 			operand = random.randint(1,5) # 操作数
 			item = ""                     # 题目
@@ -30,11 +32,14 @@ class Practice:
 
 			num = random.randint(1,100)		
 			item = item + str(num) + ' ='
+			practices.append(item)
 			print(item)
+		return practices
 
 	def practice_high(self,count,type="high"):
 		op_list = self.operation["primary"]
 		ext_list = self.operation["high"]
+		practices = []
 		length = len(op_list)
 		for i in range(0,count):
 			operand = random.randint(1,5) # 操作数
@@ -57,11 +62,14 @@ class Practice:
 
 			num = random.randint(1,100)		
 			item = item + str(num) + ' ='
+			practices.append(item)
 			print(item)
+		return practices
 
 	def practice_middle(self,count,type="middle"):
 		op_list = self.operation["primary"]
 		ext_list = self.operation["middle"]
+		practices = [] #保存结果
 		length = len(op_list)
 		for i in range(0,count):
 			operand = random.randint(1,5) # 操作数
@@ -80,15 +88,17 @@ class Practice:
 
 			num = random.randint(1,100)		
 			item = item + str(num) + ' ='
+			practices.append(item)
 			print(item)
+		return practices
 
 	def produce(self,mold,count):
 		if mold == "primary" :
-			self.pratice_primary(count)
+			return self.pratice_primary(count)
 		elif mold == "middle":
-			self.practice_middle(count)
+			return self.practice_middle(count)
 		else:
-			self.practice_high(count)
+			return self.practice_high(count)
 
 
 
