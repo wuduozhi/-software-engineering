@@ -4,7 +4,7 @@ import json
 import io
 import random
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
+# sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 
 class Practice:
 	def __init__(self):
@@ -82,6 +82,13 @@ class Practice:
 			item = item + str(num) + ' ='
 			print(item)
 
+	def produce(self,mold,count):
+		if mold == "primary" :
+			self.pratice_primary(count)
+		elif mold == "middle":
+			self.practice_middle(count)
+		else:
+			self.practice_high(count)
 
 
 
