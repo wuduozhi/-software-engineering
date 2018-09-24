@@ -5,6 +5,7 @@ import io
 import random
 from Practice import Practice
 from User import User
+from File import File
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 
@@ -12,6 +13,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 if __name__ == '__main__':
 	user = User()
 	practice = Practice()
+	file = File()
 	school = {"primary":"小学","middle":"初中","high":"高中"}
 	while 1:
 		name = input("name: ")
@@ -19,9 +21,17 @@ if __name__ == '__main__':
 		mold = user.validate(name,passwd)
 		if mold != False:
 			print("当前选择为{mold}出题".format(mold=school[mold]))
+			break
 		else:
 			print("请输入正确的用户名和密码")
 			continue
+	
+	while 1:
 		log = "准备生成{mold}数学题目,请输入生成题目数量:".format(mold=school[mold])
 		count = input(log)
-		practice.produce(mold,int(count))
+		if int(count)<10 or int(count)>30:
+			print("Count must be 10-30")
+			continue
+		
+		practices = practice.produce(mold,int(count))
+		file.write(name,practices)
