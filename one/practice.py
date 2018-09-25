@@ -104,7 +104,7 @@ class Practice:
 			return self.practice_high(count)
 
 	def addBrackets(self,item):   # 添加括号
-		num = random.randint(0,2)
+		num = random.randint(0,1)
 		string = item
 		for x in range(0,num):
 			length = len(string)

@@ -6,6 +6,7 @@ import random
 from Practice import Practice
 from User import User
 from File import File
+import re
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 
@@ -16,8 +17,12 @@ if __name__ == '__main__':
 	file = File()
 	school = {"primary":"小学","middle":"初中","high":"高中"}
 	while 1:
-		name = input("name: ")
-		passwd = input("passwd: ")
+		string = input("name and passwd: ")
+		arr = re.split(r" +",string)  # 根据空格截取name passwd
+		name = arr[0]
+		passwd = arr[1]
+		# name = input("name and passwd: ")
+		# passwd = input("passwd: ")
 		mold = user.validate(name,passwd)
 		if mold != False:
 			print("当前选择为{mold}出题".format(mold=school[mold]))
