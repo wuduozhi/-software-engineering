@@ -3,6 +3,7 @@ import sys
 import json
 import io
 import random
+from Calculation import Calculation
 
 # sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 
@@ -23,7 +24,8 @@ class Practice:
 		practices = []
 		for i in range(0,count):
 			operand = random.randint(1,5) # 操作数
-			item = str(i) +": "                     # 题目
+			# item = str(i) +": "                     # 题目
+			item = ""
 			for j in range(0,operand):
 				num = random.randint(1,100)
 				op = random.randint(0,length-1)
@@ -31,10 +33,11 @@ class Practice:
 				item = item + string
 
 			num = random.randint(1,100)		
-			item = item + str(num) + ' ='
+			# item = item + str(num) + ' ='
+			item = item + str(num)
 			item = self.addBrackets(item)
 			practices.append(item)
-			print(item)
+			# print(item)
 		return practices
 
 	def practice_high(self,count,type="high"):
@@ -44,7 +47,7 @@ class Practice:
 		length = len(op_list)
 		for i in range(0,count):
 			operand = random.randint(1,5) # 操作数
-			item = str(i) +": "                     # 题目
+			item = ""                     # 题目
 			have = 0                      # 是否已经用特殊符号
 			for j in range(0,operand):
 				flag = random.randint(0,6)   # 可以调节生成特殊符号的概率
@@ -62,10 +65,10 @@ class Practice:
 				item = item + string
 
 			num = random.randint(1,100)		
-			item = item + str(num) + ' ='
+			item = item + str(num)
 			item = self.addBrackets(item)
 			practices.append(item)
-			print(item)
+			# print(item)
 		return practices
 
 	def practice_middle(self,count,type="middle"):
@@ -75,7 +78,7 @@ class Practice:
 		length = len(op_list)
 		for i in range(0,count):
 			operand = random.randint(1,5) # 操作数
-			item = str(i) +": "                     # 题目
+			item = ""                     # 题目
 			have = 0                      # 是否已经用特殊符号
 			for j in range(0,operand):
 				flag = random.randint(0,6)   # 可以调节生成特殊符号的概率
@@ -89,10 +92,11 @@ class Practice:
 				item = item + string
 
 			num = random.randint(1,100)		
-			item = item + str(num) + ' ='
+			# item = item + str(num) + ' ='
+			item = item + str(num)
 			item = self.addBrackets(item)
 			practices.append(item)
-			print(item)
+			# print(item)
 		return practices
 
 	def produce(self,mold,count):
@@ -104,7 +108,7 @@ class Practice:
 			return self.practice_high(count)
 
 	def addBrackets(self,item):   # 添加括号
-		num = random.randint(0,1)
+		num = random.randint(0,2)
 		string = item
 		for x in range(0,num):
 			length = len(string)
@@ -119,8 +123,10 @@ class Practice:
 					n = random.randint(y+1,len(string))
 					for z in range(n,len(string)):
 						if string[z] in self.operation['primary']:   # 一起加括号
-							string = string[:j+1] + "(" + string[j+1:]
-							string = string[:z] + ")" + string[z:]
+							l = len(string)
+							string = string[:j+1] + " (" + string[j+1:]
+							z = len(string) - l + z   # 重新计算长度
+							string = string[:z] + ") " + string[z:]
 							break
 
 					break
@@ -132,6 +138,11 @@ class Practice:
 
 if __name__ == '__main__':
 	p = Practice()
-	p.pratice_primary(count=5,type="primary")
+	cal = Calculation()
+	items = p.practice_middle(count=5)
+	# items = p.pratice_primary(count=5,type="primary")
+	for item in items:
+		# print(type(item))
+		print(item + " = " + str(cal.expression_to_value(string=item)))
 	# p.practice_middle(count=5)
 	# p.practice_high(count=5)

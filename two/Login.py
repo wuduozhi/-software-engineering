@@ -5,6 +5,7 @@ from tkinter import ttk
 from tkinter import scrolledtext
 from User import User
 from Message import Message
+from Main import Main
 import hashlib
 import re
 import sys
@@ -108,7 +109,10 @@ class Login(object):
 			md5 = hashlib.md5()  # 密码MD5加密存储
 			md5.update(passwd.encode(encoding='utf-8'))
 			if User.validate(phone=phone,passwd = md5.hexdigest()) == True:
-				self.warning("LOGIN MESSAGE",'登录成功','green')
+				# self.warning("LOGIN MESSAGE",'登录成功','green')
+				self.LOGIN.destroy()
+				main = Main()
+				main.display()
 
 	def registerCommand(self):
 		warningTitle = "REGISTER WARNING"
@@ -125,6 +129,10 @@ class Login(object):
 			md5.update(passwd.encode(encoding='utf-8'))
 			User.add(phone=phone,passwd=md5.hexdigest())
 			self.warning(warningTitle,"注册成功",'green')
+			main = Main()
+			main.display()
+			self.LOGIN.destroy()
+			self.REGISTER.destroy()
 
 	def sendCode(self):
 		warningTitle = "CODE WARNING"
@@ -134,8 +142,9 @@ class Login(object):
 
 		phone = self.register_phone.get()
 		# 验证手机号是否正确
-		is_phone = re.match(r"^1[35678]\d{9}$", phone)
-		if is_phone :
+		phone_pat = re.compile('^(13\d|14[5|7]|15\d|166|17[3|6|7]|18\d)\d{8}$')
+		is_phone = re.search(phone_pat, phone)
+		if is_phone:
 			code = self.getCode(6)
 			result = Message.get_instance().send_code(code=code,phone=phone)
 			if result['statusCode'] == 200:
@@ -148,18 +157,18 @@ class Login(object):
 	# 生成验证码
 	def getCode(self,length = None):
 		li = []
-		for i in range(length): #循环6次,生成6个字符
-			r = random.randrange(0, 5) #随机生成0-4之间的数字
-			if r == 1 or r == 4:  #如果随机数字是1或者4时,生成0-9的数字
+		for i in range(length): 			#循环6次,生成6个字符
+			r = random.randrange(0, 5) 		#随机生成0-4之间的数字
+			if r == 1 or r == 4:  			#如果随机数字是1或者4时,生成0-9的数字
 				num = random.randrange(0, 9)
 				li.append(str(num))
-			else:  #如果不是1或者4时,生成65-90之间的数字
+			else:  							#如果不是1或者4时,生成65-90之间的数字
 				temp = random.randrange(65, 91)
-				char = chr(temp)  #将数字转化为ascii列表中对应的字母
+				char = chr(temp)  			#将数字转化为ascii列表中对应的字母
 				li.append(char)
 		
-		r_code = ''.join(li)  #6个字符拼接为字符串
-		self.code = r_code   # 保存code
+		r_code = ''.join(li)  				#6个字符拼接为字符串
+		self.code = r_code   				# 保存code
 		return r_code
 	
 	def warning(self,title,message,color="red"):
@@ -178,5 +187,5 @@ class Login(object):
 
 if __name__ == '__main__':
 	login = Login()
-	login.loginGUI()
-	# login.registerGUI()
+	# login.loginGUI()
+	login.registerGUI()
