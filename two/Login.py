@@ -187,5 +187,5 @@ class Login(object):
 
 if __name__ == '__main__':
 	login = Login()
-	# login.loginGUI()
-	login.registerGUI()
+	login.loginGUI()
+	# login.registerGUI()
