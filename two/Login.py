@@ -18,17 +18,6 @@ class Login(object):
 		super(Login, self).__init__()
 		self.code = None
 
-	def loginCommand(self):
-		phone = self.phone.get()
-		passwd = self.passwd.get()
-		if phone.strip() == "" or passwd.strip() == "":
-			self.warning("LOGIN WARNING",'请输入电话号码与密码')
-		else:
-			md5 = hashlib.md5()  # 密码MD5加密存储
-			md5.update(passwd.encode(encoding='utf-8'))
-			if User.validate(phone=phone,passwd = md5.hexdigest()) == True:
-				self.warning("LOGIN MESSAGE",'登录成功','green')
-
 	# 登录界面
 	def loginGUI(self):
 		self.LOGIN = tk.Tk()
@@ -106,14 +95,32 @@ class Login(object):
 
 		self.REGISTER.mainloop()
 
-	def codeWarning(self,message,color="red"):
-		warning = tk.Tk()
-		warning.title("Code Warning")
-		label_warning = Label(warning,text=message)
-		label_warning.configure(foreground=color)
-		label_warning.pack()
-		# label_warning.configure(text='A Red Label')
-		warning.mainloop()
+	def loginCommand(self):
+		phone = self.phone.get()
+		passwd = self.passwd.get()
+		if phone.strip() == "" or passwd.strip() == "":
+			self.warning("LOGIN WARNING",'请输入电话号码与密码')
+		else:
+			md5 = hashlib.md5()  # 密码MD5加密存储
+			md5.update(passwd.encode(encoding='utf-8'))
+			if User.validate(phone=phone,passwd = md5.hexdigest()) == True:
+				self.warning("LOGIN MESSAGE",'登录成功','green')
+
+	def registerCommand(self):
+		warningTitle = "REGISTER WARNING"
+		phone = self.register_phone.get()
+		passwd = self.register_passwd.get()
+		passwd_again = self.register_passwd_again.get()
+		code_input = self.code_input.get()
+		if passwd == '' or passwd_again=='' or passwd != passwd_again :
+			self.warning(warningTitle,"两次密码输入不正确")
+		elif self.code != code_input :
+			self.warning(warningTitle,"请输入正确的手机验证码")
+		else:
+			md5 = hashlib.md5()  # 密码MD5加密存储
+			md5.update(passwd.encode(encoding='utf-8'))
+			User.add(phone=phone,passwd=md5.hexdigest())
+			self.warning(warningTitle,"注册成功",'green')
 
 	def sendCode(self):
 		warningTitle = "CODE WARNING"
@@ -160,22 +167,6 @@ class Login(object):
 		# label_warning.configure(text='A Red Label')
 		warning.mainloop()
 
-
-	def registerCommand(self):
-		warningTitle = "REGISTER WARNING"
-		phone = self.register_phone.get()
-		passwd = self.register_passwd.get()
-		passwd_again = self.register_passwd_again.get()
-		code_input = self.code_input.get()
-		if passwd == '' or passwd_again=='' or passwd != passwd_again :
-			self.warning(warningTitle,"两次密码输入不正确")
-		elif self.code != code_input :
-			self.warning(warningTitle,"请输入正确的手机验证码")
-		else:
-			md5 = hashlib.md5()  # 密码MD5加密存储
-			md5.update(passwd.encode(encoding='utf-8'))
-			User.add(phone=phone,passwd=md5.hexdigest())
-			self.warning(warningTitle,"注册成功",'green')
 
 
 
