@@ -128,7 +128,7 @@ class Login(object):
 			md5 = hashlib.md5()  # 密码MD5加密存储
 			md5.update(passwd.encode(encoding='utf-8'))
 			User.add(phone=phone,passwd=md5.hexdigest())
-			self.warning(warningTitle,"注册成功",'green')
+			# self.warning(warningTitle,"注册成功",'green')
 			main = Main()
 			main.display()
 			self.LOGIN.destroy()
