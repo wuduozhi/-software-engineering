@@ -1,34 +1,55 @@
 # -*- coding: UTF-8 -*-
- 
 import tkinter as tk
+from tkinter import *
 from tkinter import ttk
-
-# Create instance
-window = tk.Tk()
-
-# Add a title
-window.title("My First Python GUI")
-
-# Adding a Label that will get modified
-a_label = ttk.Label(window, text = 'A Label')
-a_label.grid(column=0, row=0)
+from tkinter import scrolledtext
+import sys
+import json
+import io
+import random
 
 
-# Modified Button click Event Function
-def click_me():
-	action.configure(text='Hello ' + name.get())
+class Gui(object):
+	
+	@staticmethod
+	def login():
+		# Create instance
+		window = tk.Tk()
+		# Add a title
+		window.title("Main GUI")
+		
+		# window.geometry("300x200")
 
-# Changing our Label
-ttk.Label(window, text='Enter a name: ').grid(column=0, row=0)
+		app = Frame(window)
+		app.grid(column=0, row=0)
+		
+		label_phone = Label(app,text="phone :")
+		label_phone.grid(column=0, row=0)
 
-# Adding a Text Box Entry widget
-name = tk.StringVar()
-name_entered = ttk.Entry(window, width=12, textvariable=name)
-name_entered.grid(column=0, row=1)
+		label_passwd = Label(app,text="passwd :")
+		label_passwd.grid(column=0, row=1)
 
-# Adding a Button
-action = ttk.Button(window, text="Click Me!", command=click_me)   
-action.grid(column=1, row=1)
 
-# Start GUI
-window.mainloop()
+		phone = StringVar()
+		entry_phone = Entry(app,textvariable = phone)
+		entry_phone.grid(column=1, row=0)
+
+		passwd = StringVar()
+		entry_passwd = Entry(app,textvariable = passwd)
+		entry_passwd.grid(column=1, row=1)
+
+		btn_register = Button(app)
+		btn_register.grid(column=0, row=2)
+		btn_register.configure(text="register")
+
+		btn = Button(app)
+		btn.grid(column=1, row=2)
+		#小部件的任何选项都可以通过configure()方法操作
+		btn.configure(text = "submit")
+
+		window.mainloop()
+
+if __name__ == '__main__':
+	phone = StringVar()
+	passwd = StringVar()
+	Gui.login()
