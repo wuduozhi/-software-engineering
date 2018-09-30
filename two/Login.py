@@ -34,6 +34,7 @@ class Login(object):
 		entry_phone.grid(column=1, row=0)
 		self.passwd = StringVar()
 		entry_passwd = Entry(app,textvariable = self.passwd)
+		entry_passwd['show'] = '*'   # 不明文显示密码
 		entry_passwd.grid(column=1, row=1)
 
 		btn = Frame(self.LOGIN)
@@ -76,10 +77,13 @@ class Login(object):
 		entry_code.grid(column=1, row=1)
 		self.register_passwd = StringVar()
 		entry_passwd = Entry(label,textvariable = self.register_passwd)
+		entry_passwd['show'] = '*' # 不明文显示密码
 		entry_passwd.grid(column=1, row=2)
 		self.register_passwd_again = StringVar()
 		entry_passwd_again = Entry(label,textvariable = self.register_passwd_again)
+		entry_passwd_again['show'] = '*'  # 不明文显示密码
 		entry_passwd_again.grid(column=1, row=3)
+
 
 		# 按钮
 		btn = Frame(self.REGISTER)
