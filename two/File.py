@@ -35,7 +35,7 @@ class File:
 	# json 文件写入
 	@staticmethod
 	def write_json(file_abs,data):
-		with open(file_abs,'w') as dump_f:
+		with open(file_abs,'w+') as dump_f:
 			json.dump(data,dump_f)
 
 

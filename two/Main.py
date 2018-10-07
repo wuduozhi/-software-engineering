@@ -43,8 +43,8 @@ class Main(object):
 		count_entered = ttk.Entry(self.head, width=12, textvariable=self.count)
 		count_entered.grid(column=0, row=1) # column 0
 		# Adding a Button
-		action = ttk.Button(self.head, text="生成试卷", command=self.creatPractices)   
-		action.grid(column=2, row=1) # change column to 2
+		self.action = ttk.Button(self.head, text="生成试卷", command=self.creatPractices)   
+		self.action.grid(column=2, row=1) # change column to 2
 		
 		ttk.Label(self.head, text='Choose a Mold:').grid(column=1, row=0)
 		
@@ -56,14 +56,15 @@ class Main(object):
 		mold_chosen.current(0)
 
 		# 题目展示模块
-		self.middle = Frame(self.window)
+		self.middle = Frame(self.window,width=200)
+		# self.middle.pack_propagate(0)
 		self.middle.pack()
 
 		# self.practice = StringVar()
 		
 		
 		# 显示题目
-		self.show_label = Label(self.middle,text="这里是题目....")
+		self.show_label = Label(self.middle,text="这里是题目....",font=("Arial", 15),height = 3)
 		self.show_label.pack()		
 
 		# 显示答案
@@ -84,11 +85,12 @@ class Main(object):
 		self.rad_D = tk.Radiobutton(self.radio, text="D", variable=self.input_answer, value="D", command=radCall)
 		self.rad_D.grid(column=3, row=0)
 
-		submit = Button(self.window, text="提交", width = 40,command=self.submit)
-		submit.pack()
+		self.submit = Button(self.window, text="提交", width = 40,command=self.submitCommand,state=DISABLED)
+		self.submit.pack()
 		# Start GUI
 		self.window.mainloop()
 
+	# 生成试卷按钮的处理函数
 	def creatPractices(self):
 		count = self.count.get()
 		mold = self.mold.get()
@@ -97,7 +99,8 @@ class Main(object):
 			return
 		self.practices = self.producer.produce(mold=self.school[mold],count = int(count))
 		self.showinfo("生成题目","生成题目成功")
-
+		self.action.configure(state=DISABLED)   # 设置生成试卷按钮不可点
+		self.submit.configure(state=NORMAL)   # 设置生成提交按钮可点
 		# 重新设置
 		self.index = 0
 		self.score = 0
@@ -107,12 +110,14 @@ class Main(object):
 		self.setChoice(practice = practice,answer = answer)
 		
 		
-	def submit(self):
+	def submitCommand(self):
 		input_answer = self.input_answer.get()
 		if input_answer == self.answer:
 			self.score = self.score + 1
-		if self.index == int(self.count.get())-1:  # 答题结束，显示分数
-			self.show_label.configure(text = "score:"+str(self.score))
+		if self.index == int(self.count.get()):  # 答题结束，显示分数
+			self.show_label.configure(text = "score:"+str(self.score)+"/"+self.count.get(),font=("Arial", 18),fg = 'red')
+			self.action.configure(state=NORMAL)   # 设置生成试卷按钮可点
+			self.submit.configure(state=DISABLED)   # 设置生成提交按钮不可点
 			return
 		practice = self.practices[self.index]
 		answer = self.cal.expression_to_value(string = self.practices[self.index])
@@ -120,9 +125,9 @@ class Main(object):
 
 	# 设置选项和题目
 	def setChoice(self,practice,answer):
-		practice = str(self.index) + ": " + practice + "="
+		practice = str(self.index+1) + ": " + practice + "="
 		self.index = self.index+1
-		self.show_label.configure(text = practice)
+		self.show_label.configure(text = practice,fg = 'black')
 		num = random.randint(0,3)
 		ans = ['A','B','C','D']
 		self.answer = ans[num]   # 设置答案
@@ -131,9 +136,9 @@ class Main(object):
 		l = [self.rad_A,self.rad_B,self.rad_C,self.rad_D]
 		for i in range(0,4):
 			if i == num:
-				l[i].configure(text = answer)
+				l[i].configure(text = answer,font=("Arial", 12))
 				continue
-			l[i].configure(text = answers[j])
+			l[i].configure(text = answers[j],font=("Arial", 12))
 			j = j+1
 
 	# 提示框
