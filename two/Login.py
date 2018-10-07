@@ -113,7 +113,7 @@ class Login(object):
 			if User.validate(phone=phone,passwd = md5.hexdigest()) == True:
 				# self.warning("LOGIN MESSAGE",'登录成功','green')
 				self.LOGIN.destroy()
-				main = Main()
+				main = Main(phone)
 				main.display()
 
 	# 注册的事件处理函数  包括一些常用的验证
@@ -136,7 +136,7 @@ class Login(object):
 			md5.update(passwd.encode(encoding='utf-8'))
 			User.add(phone=phone,passwd=md5.hexdigest())
 			self.REGISTER.destroy()   # 必须destroy()  ,不然其他的输入框不能获取到值
-			main = Main()
+			main = Main(phone)
 			main.display()
 
 	# 发送验证码

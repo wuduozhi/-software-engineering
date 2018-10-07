@@ -7,6 +7,7 @@ import os
 import time
 
 class File:
+
 	def creatDir(self,name):
 		file_dir = os.getcwd()
 		name_dir = name
@@ -16,6 +17,7 @@ class File:
 
 		return file_abs
 	
+	#写入试卷
 	def write(self,name,practices = []):
 		file_dir = self.creatDir(name)
 		file_name = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())+'.txt'			

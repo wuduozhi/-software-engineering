@@ -10,13 +10,14 @@ import io
 import random
 from Practice import Practice
 from Calculation import Calculation
+from File import File
 
 def radCall():
 	pass
 
 class Main(object):
 	"""docstring for Main"""
-	def __init__(self, arg = None):
+	def __init__(self, phone = None):
 		super(Main, self).__init__()
 		self.producer = Practice()  # 生成题目
 		self.cal = Calculation()    # 计算结果
@@ -25,7 +26,8 @@ class Main(object):
 		self.answer = None  # 记录答案
 		self.index = 0      # 第几题
 		self.practices = None  # 生成的题目
-		self.arg = arg
+		self.phone = phone
+		self.file = File()     # 保存试卷
 
 
 	# 题目展示
@@ -107,6 +109,7 @@ class Main(object):
 		# 处理题目显示
 		practice = self.practices[0]
 		answer = self.cal.expression_to_value(string = self.practices[0])
+		self.practices[0] = "1:"+self.practices[0] + " = " + str(answer) 
 		self.setChoice(practice = practice,answer = answer)
 		
 		
@@ -116,17 +119,19 @@ class Main(object):
 			self.score = self.score + 1
 		if self.index == int(self.count.get()):  # 答题结束，显示分数
 			self.show_label.configure(text = "score:"+str(self.score)+"/"+self.count.get(),font=("Arial", 18),fg = 'red')
-			self.action.configure(state=NORMAL)   # 设置生成试卷按钮可点
+			self.action.configure(state=NORMAL)     # 设置生成试卷按钮可点
 			self.submit.configure(state=DISABLED)   # 设置生成提交按钮不可点
+			self.file.write(self.phone,self.practices)         # 保存题目
 			return
 		practice = self.practices[self.index]
 		answer = self.cal.expression_to_value(string = self.practices[self.index])
+		self.practices[self.index] = str(self.index+1) + ":" + self.practices[self.index] + " = " + str(answer)  # 添加答案
 		self.setChoice(practice = practice,answer = answer)
 
 	# 设置选项和题目
 	def setChoice(self,practice,answer):
 		practice = str(self.index+1) + ": " + practice + "="
-		self.index = self.index+1
+		self.index = self.index+1   # index+1
 		self.show_label.configure(text = practice,fg = 'black')
 		num = random.randint(0,3)
 		ans = ['A','B','C','D']
@@ -147,5 +152,6 @@ class Main(object):
 
 
 if __name__ == '__main__':
-	main = Main()
-	main.display()
+	pass
+	# main = Main()
+	# main.display()
