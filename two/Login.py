@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 from tkinter import scrolledtext
+from tkinter.messagebox import *
 from User import User
 from Message import Message
 from Main import Main
@@ -50,8 +51,9 @@ class Login(object):
 		btn_submit.configure(text = "submit")
 		self.LOGIN.mainloop()
 
-
+	# 注册界面
 	def registerGUI(self):
+		self.LOGIN.destroy()
 		self.REGISTER = tk.Tk()
 		self.REGISTER.title("REGISTER GUI")
 
@@ -114,6 +116,7 @@ class Login(object):
 				main = Main()
 				main.display()
 
+	# 注册的事件处理函数  包括一些常用的验证
 	def registerCommand(self):
 		warningTitle = "REGISTER WARNING"
 		phone = self.register_phone.get()
@@ -122,18 +125,21 @@ class Login(object):
 		code_input = self.code_input.get()
 		if passwd == '' or passwd_again=='' or passwd != passwd_again :
 			self.warning(warningTitle,"两次密码输入不正确")
+		elif len(passwd)<6 or len(passwd) > 10 :
+			self.warning(warningTitle,"请保证密码长度为6-10")
+		elif re.match("^(?:(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])).*$",passwd)==None:  # 验证密码必须包含大小写和数字
+			self.warning(warningTitle,"请保证密码必须含大小写字母和数字")
 		elif self.code != code_input :
 			self.warning(warningTitle,"请输入正确的手机验证码")
 		else:
 			md5 = hashlib.md5()  # 密码MD5加密存储
 			md5.update(passwd.encode(encoding='utf-8'))
 			User.add(phone=phone,passwd=md5.hexdigest())
-			# self.warning(warningTitle,"注册成功",'green')
+			self.REGISTER.destroy()   # 必须destroy()  ,不然其他的输入框不能获取到值
 			main = Main()
 			main.display()
-			self.LOGIN.destroy()
-			self.REGISTER.destroy()
 
+	# 发送验证码
 	def sendCode(self):
 		warningTitle = "CODE WARNING"
 		if self.code != None:
@@ -171,15 +177,16 @@ class Login(object):
 		self.code = r_code   				# 保存code
 		return r_code
 	
+	# 提示框
 	def warning(self,title,message,color="red"):
-		warning = tk.Tk()
-		warning.title(title)
-		label_warning = Label(warning,text=message)
-		label_warning.configure(foreground=color)
-		label_warning.pack()
-		# label_warning.configure(text='A Red Label')
-		warning.mainloop()
-
+		# warning = tk.Tk()
+		# warning.title(title)
+		# label_warning = Label(warning,text=message)
+		# label_warning.configure(foreground=color)
+		# label_warning.pack()
+		# # label_warning.configure(text='A Red Label')
+		# warning.mainloop()
+		showinfo(title,message)
 
 
 
