@@ -29,7 +29,10 @@ class File:
 	# json 文件读出
 	@staticmethod
 	def read_json(file_abs):
-		with open(file_abs,'r') as load_f:
+		if os.path.exists(file_abs) == False:  # 创建文件
+			return False
+
+		with open(file_abs,"r") as load_f:
 			data = json.load(load_f)
 
 		return data
@@ -37,7 +40,9 @@ class File:
 	# json 文件写入
 	@staticmethod
 	def write_json(file_abs,data):
+		if os.path.exists(file_abs) == False:  # 创建文件
+			f = open(file_abs,mode='a+')
+			f.close()
+
 		with open(file_abs,'w+') as dump_f:
 			json.dump(data,dump_f)
-
-

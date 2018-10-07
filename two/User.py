@@ -8,7 +8,7 @@ from File import File
 
 
 class User(object):
-	file_abs = file_abs = os.path.join(os.getcwd(),"user.json")
+	file_abs  = os.path.join(os.getcwd(),"user.json")
 		
 
 	# 用户检测
@@ -29,6 +29,8 @@ class User(object):
 			'passwd':passwd
 		}
 		users = File.read_json(User.file_abs)
+		if users == False:
+			users = []
 		users.append(user)
 		File.write_json(User.file_abs,users)
 
